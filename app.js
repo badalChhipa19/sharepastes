@@ -1,6 +1,5 @@
 // External dependencies.
 import express from "express";
-import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -15,14 +14,6 @@ const app = express();
 
 // Middleware to parse JSON bodies.
 app.use(express.json());
-
-// Allow frontend (5173) to call backend (3000)
-app.use(
-  cors({
-    origin: "http://localhost:5173", // frontend URL
-    methods: ["GET", "POST"],
-  })
-);
 
 // Use the imported API routes first
 app.use("/api", routes);

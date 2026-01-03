@@ -11,7 +11,7 @@ const ViewPaste = () => {
 
     const fetchPaste = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/pastes/${id}`);
+        const res = await fetch(`/api/pastes/${id}`);
         const data = await res.json();
 
         if (res.ok) {
