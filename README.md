@@ -74,6 +74,17 @@ Users can create text pastes with optional expiry (TTL) and view limits, then sh
 
 ---
 
+## 📌 Deployment Note
+
+The assignment PDF suggested deploying on **Vercel**.  
+This project uses an Express backend with Redis, which requires a long‑running Node.js server.  
+Vercel is optimized for serverless functions and does not support this architecture directly.
+
+For this reason, the app is deployed on **Render**, which supports full Node servers and allows both the API and frontend build to run together.  
+The deployment steps remain the same (`npm run build` then `npm start`), and recruiters can test the app live on Render without any changes.
+
+---
+
 ## 📝 Design Decisions
 
 - **Removed CORS and concurrently**:
