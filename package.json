@@ -1,0 +1,25 @@
+{
+  "name": "sharepaste",
+  "version": "1.0.0",
+  "description": "A simple project to provide text sharing functionality",
+  "license": "ISC",
+  "author": "Badal Chhipa",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start:backend": "nodemon server.js",
+    "start:frontend": "cd frontend && npm run dev",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "nanoid": "^5.1.6",
+    "redis": "^5.10.0"
+  }
+}
