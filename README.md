@@ -30,10 +30,7 @@ Users can create text pastes with optional expiry (TTL) and view limits, then sh
 3. Build the frontend:
 
    ```bash
-   cd frontend
-   npm install
    npm run build
-   cd ..
    ```
 
 4. Start the backend (which also serves the built frontend):
