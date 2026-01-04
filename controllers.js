@@ -1,6 +1,15 @@
 import { nanoid } from "nanoid";
 import redisClient from "./db.js";
 
+// utils [x-test-now-ms].
+export const getCurrentTime = (req) => {
+  const TEST_MODE = process.env.TEST_MODE === "1";
+  if (TEST_MODE && req.headers["x-test-now-ms"]) {
+    return parseInt(req.headers["x-test-now-ms"], 10);
+  }
+  return Date.now();
+};
+
 // Crete Paste controller.
 export const createPaste = async (req, res) => {
   try {
@@ -38,13 +47,16 @@ export const createPaste = async (req, res) => {
     const id = nanoid(10);
     const key = `paste:${id}`;
 
+    // Get time of creation.
+    const now = getCurrentTime(req);
+
     // Store in Redis
     const pasteData = {
       content,
       ttl_seconds: ttl_seconds ?? null,
       max_views: max_views ?? null,
       views_used: 0,
-      created_at: Date.now(),
+      created_at: now,
     };
 
     await redisClient.set(key, JSON.stringify(pasteData));
@@ -78,9 +90,22 @@ export const getPaste = async (req, res) => {
     }
 
     const paste = JSON.parse(associatedData);
+    const now = getCurrentTime(req);
+
+    // Check expiry by absolute timestamp
+    if (paste.ttl_seconds) {
+      const expiryTime = paste.created_at + paste.ttl_seconds * 1000;
+      if (now > expiryTime) {
+        await redisClient.del(`paste:${id}`);
+        return res
+          .status(410)
+          .json({ status: "fail", message: "Paste expired (time limit)." });
+      }
+    }
 
     // Check view limit
     if (paste.max_views && paste.views_used >= paste.max_views) {
+      await redisClient.del(`paste:${id}`);
       return res
         .status(404)
         .json({ status: "fail", message: "Max view limit reached." });

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Form from "./form.component";
-import ViewPaste from "./paste.component";
-import NotFound from "./404.component";
+import Form from "./components/form.component";
+import ViewPaste from "./components/paste.component";
+import NotFound from "./components/404.component";
 
 import "./App.css";
 
